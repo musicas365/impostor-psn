@@ -1,0 +1,13 @@
+const allTasks = [
+    "Cantar uma música para outro jogador",
+    "Contar uma piada para o grupo",
+    "Fazer um desenho e mostrar para os outros",
+    "Falar uma palavra proibida sem que percebam",
+    "Imitar um animal até alguém acertar qual é"
+];
+
+const impostorTasks = [
+    "Mudar uma regra do jogo sem que percebam",
+    "Convencer alguém a trocar uma tarefa",
+    "Fingir que uma tarefa foi concluída"
+];

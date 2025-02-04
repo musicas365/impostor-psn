@@ -1,0 +1,55 @@
+function startGame() {
+    let playerName = document.getElementById('playerName').value;
+    let gameDuration = parseInt(document.getElementById('gameDuration').value);
+
+    if (playerName.trim() === '') {
+        alert('Digite um nome válido!');
+        return;
+    }
+
+    let endTime = Date.now() + gameDuration * 60 * 60 * 1000;
+    localStorage.setItem('endTime', endTime);
+    localStorage.setItem('currentPlayer', playerName);
+
+    let players = JSON.parse(localStorage.getItem('players')) || [];
+    players.push({ name: playerName, points: 0, tasks: [] });
+    localStorage.setItem('players', JSON.stringify(players));
+    
+    window.location.href = "game.html";
+}
+
+function loadPlayerTasks() {
+    let playerName = localStorage.getItem('currentPlayer');
+    let players = JSON.parse(localStorage.getItem('players')) || [];
+    let player = players.find(p => p.name === playerName);
+
+    if (!player) {
+        alert("Jogador não encontrado!");
+        window.location.href = "index.html";
+        return;
+    }
+
+    document.getElementById('playerNameDisplay').innerText = `Bem-vindo, ${player.name}!`;
+
+    let taskList = document.getElementById('taskList');
+    taskList.innerHTML = "";
+
+    player.tasks.forEach((task, index) => {
+        let listItem = document.createElement('li');
+        listItem.innerHTML = `${task} <button onclick="completeTask(${index})">✔</button>`;
+        taskList.appendChild(listItem);
+    });
+}
+
+function completeTask(taskIndex) {
+    let playerName = localStorage.getItem('currentPlayer');
+    let players = JSON.parse(localStorage.getItem('players')) || [];
+    let player = players.find(p => p.name === playerName);
+
+    if (player) {
+        player.tasks.splice(taskIndex, 1);
+        player.points += 10;
+        localStorage.setItem('players', JSON.stringify(players));
+        loadPlayerTasks();
+    }
+}
